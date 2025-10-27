@@ -1,10 +1,23 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
       - id: check-yaml
+        # YAML 文件语法检查（只检查，不修复）
+      - id: check-json
+        # JSON 文件语法检查
+      - id: check-xml
+        # XML 文件语法检查
+      - id: check-merge-conflict
+        # 检查合并冲突标记
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.1
+    hooks:
+      - id: forbid-tabs
+        # 检查是否使用了制表符而不是空格
+      - id: remove-tabs
+        # 移除制表符（如果需要修复）
 
   - repo: local
     hooks:
@@ -14,13 +27,3 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-        
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
-    hooks:
-      - id: trailing-whitespace
-        # 添加以下配置，只警告不自动修复
-        args: [--markdown-linebreak-ext=md, --no-fix]
-      - id: end-of-file-fixer
-        # 禁用自动修复
-        args: [--no-fix]
