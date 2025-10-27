@@ -14,3 +14,13 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+        
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        # 添加以下配置，只警告不自动修复
+        args: [--markdown-linebreak-ext=md, --no-fix]
+      - id: end-of-file-fixer
+        # 禁用自动修复
+        args: [--no-fix]
