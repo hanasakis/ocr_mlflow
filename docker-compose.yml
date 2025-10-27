@@ -1,0 +1,41 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  ocr-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - LOG_LEVEL=INFO
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - DAGSHUB_USERNAME=${DAGSHUB_USERNAME}
+      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./tests:/app/tests
+      - ./.dvc:/app/.dvc  # 挂载DVC配置
+    restart: unless-stopped
+    command: python app/main.py tests/mnist_style.png --mode single  # 示例：运行单数字识别
+
+  ocr-training:
+    build: .
+    environment:
+      - DEBUG=True
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - DAGSHUB_USERNAME=${DAGSHUB_USERNAME}
+      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./.dvc:/app/.dvc  # 挂载DVC配置
+    profiles: ["training"]
+    command: >
+      sh -c "dvc pull data/raw.dvc &&  # 拉取DVC数据
+             python train.py"  # 运行训练
+
+volumes:
+  data:
+  models:

@@ -1,0 +1,44 @@
+# .github/workflows/ci-cd.yml
+name: Simple OCR CI/CD
+
+# 保持原有的分支触发逻辑不变
+on:
+  pull_request:
+    branches: [ dev, staging, main ]
+  push:
+    branches: [ dev, staging, main ]
+
+env:
+  PYTHON_VERSION: 3.8
+
+jobs:
+  pre-commit-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pre-commit
+          # 如果有requirements.txt也安装
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Run pre-commit
+        run: |
+          # 如果.pre-commit-config.yaml存在，则运行pre-commit
+          if [ -f ".pre-commit-config.yaml" ]; then
+            pre-commit run --all-files
+          else
+            echo "No .pre-commit-config.yaml found, skipping pre-commit"
+          fi
