@@ -1,0 +1,8 @@
+# Add patterns of files dvc should ignore, which could improve
+# the performance. Learn more at
+# https://dvc.org/doc/user-guide/dvcignore
+# .dvcignore
+data/raw/.DS_Store          # macOS临时文件
+data/processed/*.log        # 预处理日志（若有）
+.env                        # 本地环境变量（不跟踪）
+.idea/                      # IDE配置文件
