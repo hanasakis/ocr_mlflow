@@ -11,9 +11,9 @@ repos:
     rev: v1.5.1
     hooks:
       - id: forbid-tabs
-        exclude: "\.md$"  # 跳过 .md 文件
+        exclude: '\.md$'  # 修复：单引号包裹
       - id: remove-tabs
-        exclude: "\.md$"  # 跳过 .md 文件
+        exclude: '\.md$'
 
   - repo: local
     hooks:
