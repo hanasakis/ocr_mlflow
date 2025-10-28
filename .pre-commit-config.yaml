@@ -3,21 +3,17 @@ repos:
     rev: v4.6.0
     hooks:
       - id: check-yaml
-        # YAML 文件语法检查（只检查，不修复）
       - id: check-json
-        # JSON 文件语法检查
       - id: check-xml
-        # XML 文件语法检查
       - id: check-merge-conflict
-        # 检查合并冲突标记
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.1
     hooks:
       - id: forbid-tabs
-        # 检查是否使用了制表符而不是空格
+        exclude: "\.md$"  # 跳过 .md 文件
       - id: remove-tabs
-        # 移除制表符（如果需要修复）
+        exclude: "\.md$"  # 跳过 .md 文件
 
   - repo: local
     hooks:
